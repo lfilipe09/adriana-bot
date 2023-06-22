@@ -1,0 +1,49 @@
+service: adriana-bot
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  iam:
+    role:
+      statements:
+      - Effect: "Allow"
+        Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:us-east-1:111111111111:table/onboarding
+  environment:
+    TOKEN: testtoken
+    REVIEW_TABLE: reviews
+
+plugins:
+  - serverless-offline
+
+functions:
+  app:
+    handler: handler.handler
+    events:
+      - http: 
+          path: /webhooks
+          method: any
+
+resources:
+  Resources:
+    ReviewsTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: onboarding
+        AttributeDefinitions:
+          - AttributeName: phonenumber
+            AttributeType: S
+        KeySchema:
+          - AttributeName: phonenumber
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
