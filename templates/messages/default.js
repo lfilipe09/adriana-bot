@@ -33,4 +33,6 @@ const greetings = (user) => ({
   }
 })
 
-module.exports = {greetings}
+const menu = (user) => ({})
+
+module.exports = {greetings, menu}

@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const config = {
-  headers: { 'Authorization': process.env.FACEBOOK_TOKEN, 'Content-Type': 'application/json'}
+  headers: { 'Authorization': 'Bearer EAANvl8azHFIBAL1vnJnlwInmIjL38oTs2K9iGELlZBxwXqSo0ZAuteuSF55Waiql6GpaB3ljgEF53Xc3NKkPiUzisOHP8CYmdhaqxHQIfjw3ZAfkYOglLTQQYEH6VKYihzoj43TqQW8YO8oIgLeiTabWEJWrzZCsjDaD1APh3UdBUAli1xnx', 'Content-Type': 'application/json'}
 };
 
 async function answerUser (template) {

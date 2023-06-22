@@ -1,5 +1,5 @@
-const { greetings } = require("./messages/default")
-const { onboardingOne, onboardingTwo, refuseOnboarding, fallbackOnboardingTwo, onboardingThree } = require("./messages/onboarding")
+const { greetings, menu } = require("./messages/default")
+const { onboardingOne, onboardingTwo, refuseOnboarding, fallbackOnboardingTwo, onboardingThree, fallbackOnboardingThree, fallbackOnboardingFour, onboardingFour } = require("./messages/onboarding")
 
 const templatebyContext = {
   initialContact: {
@@ -27,11 +27,21 @@ const templatebyContext = {
   onboardingTwo:{
     name: 'onboardingThree',
     template: onboardingThree
+  },
+  onboardingThree: {
+    name: 'onboardingFour',
+    template: onboardingFour
+  },
+  onboardingFour: {
+    name: 'menu',
+    template: menu
   }
 }
 
 const getFallbackByContext = {
-  onboardingTwo: fallbackOnboardingTwo
+  onboardingTwo: fallbackOnboardingTwo,
+  onboardingThree: fallbackOnboardingThree,
+  onboardingFour: fallbackOnboardingFour
 }
 
 module.exports = {templatebyContext, getFallbackByContext}

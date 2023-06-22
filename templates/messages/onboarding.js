@@ -31,6 +31,40 @@ const onboardingThree = (user) => ({
   }
 })
 
+const onboardingFour = (user) => ({
+	"messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": user,
+  "type": "interactive",
+  "interactive":{
+    "type": "list",
+    "body": {
+      "text": "*PERGUNTA 04 de 04*\n\nPara que eu possa me comunicar de forma mais adequada, posso saber qual é o seu gênero?"
+    },
+    "action": {
+      "button": "Gêneros",
+      "sections":[
+        {
+          "rows": [
+            {
+              "id":"masculino",
+              "title": "Masculino"    
+            },
+						{
+              "id":"feminino",
+              "title": "Feminino"    
+            },
+						{
+              "id":"outro",
+              "title": "Outro"    
+            }
+          ]
+        }
+      ]
+    }
+  }
+})
+
 const refuseOnboarding = (user) => ({
   "messaging_product": "whatsapp",
   "recipient_type": "individual",
@@ -53,4 +87,58 @@ const fallbackOnboardingTwo = (user) => ({
   }
 })
 
-module.exports = {onboardingOne, onboardingTwo, refuseOnboarding, fallbackOnboardingTwo, onboardingThree}
+const fallbackOnboardingThree = (user) => ({
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": user,
+  "type": "text",
+  "text": { 
+    "preview_url": false,
+    "body": "Ops! Parece que algo deu errado. Por favor, digite apenas siglas para a cidade, sem utilizar caracteres especiais ou números.\nExemplo: SP, DF, RJ\n\nVamos tentar novamente? 😊"
+  }
+})
+
+const fallbackOnboardingFour = (user) => ({
+	"messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": user,
+  "type": "interactive",
+  "interactive":{
+    "type": "list",
+    "body": {
+      "text": "Ops! Parece que algo deu errado. Por favor, selecione uma das opções do seletor abaixo\n\nVamos tentar novamente? 😊"
+    },
+    "action": {
+      "button": "Gêneros",
+      "sections":[
+        {
+          "rows": [
+            {
+              "id":"masculino",
+              "title": "Masculino"    
+            },
+						{
+              "id":"feminino",
+              "title": "Feminino"    
+            },
+						{
+              "id":"outro",
+              "title": "Outro"    
+            }
+          ]
+        }
+      ]
+    }
+  }
+})
+
+module.exports = {
+  onboardingOne, 
+  onboardingTwo, 
+  refuseOnboarding, 
+  fallbackOnboardingTwo, 
+  onboardingThree, 
+  onboardingFour, 
+  fallbackOnboardingThree,
+  fallbackOnboardingFour
+}
