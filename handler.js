@@ -3,7 +3,9 @@ const express = require('express')
 const { templatebyContext, getFallbackByContext } = require('./templates/context')
 const { answerUser } = require('./utils/bot')
 const { putDataFromMessages, getDataFromMessages } = require('./db/actions')
-const { answersValidations, getSubcontextByContext, storageAnswerByContext, dbColumnName } = require('./templates/validations')
+const { answersValidations, getSubcontextByContext, storageAnswerByContext, dbColumnName, specialContext } = require('./templates/validations')
+const { customFlows } = require('./flows/customFlows')
+const { transformTextToHandle } = require('./utils/transformTextToHandle')
 
 const app = express()
 
@@ -22,16 +24,17 @@ app.get('/webhooks',  (req, res) => {
 
 app.post('/webhooks', async (req, res) => {
   const body = JSON.parse(req.body)
-  console.log('olha o changes: ', body.entry)
-  console.log('olha o changes: ', body.entry[0].changes[0])
-  console.log('olha o messages: ', body.entry[0].changes[0].value.messages)
-  const userMessagesObject = body.entry[0].changes[0].value.messages
-  const userPhone = body.entry[0].changes[0].value.messages[0].from
+  const userMessagesObject = body.entry?.[0].changes?.[0].value.messages
+  const userPhone = body.entry?.[0].changes?.[0].value.messages?.[0].from
 
-  if(body.entry[0].changes[0].field !== 'messages'){
+  if(body.entry[0].changes[0].field !== 'messages' || !userMessagesObject){
     // not from the messages webhook so dont process
     return res.sendStatus(400)
   }
+
+  console.log('olha o changes: ', body.entry)
+  console.log('olha o changes: ', body.entry?.[0].changes?.[0])
+  console.log('olha o messages: ', body.entry?.[0].changes?.[0].value.messages)
   
   getDataFromMessages(userMessagesObject).then((userDataPending) => {
     Promise.all(userDataPending).then(async (userData) => {
@@ -51,23 +54,32 @@ app.post('/webhooks', async (req, res) => {
 
         const userContext = userData[0].Item.context;
 
-        const isAnswerRight = !(userContext in answersValidations) ? true : answersValidations[userContext].test(answer)
+        const isAnswerRight = 
+          !(userContext in answersValidations) 
+            ? true 
+            : answersValidations[userContext].test(transformTextToHandle(answer))
 
         if(isAnswerRight){
-          const { template, name } = getSubcontextByContext.includes(userContext) ? templatebyContext[userContext][answer.toLowerCase()] : templatebyContext[userContext]
-          answerUser(template(userPhone))
-          const data = storageAnswerByContext.includes(userContext) 
-            ? { ...userData[0].Item , [dbColumnName[userContext] ? dbColumnName[userContext] : userContext] : answer} 
-            : {...userData[0].Item}
-          delete data.phonenumber
-          delete data.context
-          putDataFromMessages(userMessagesObject, data , name).then((userPutPending) => {
-            Promise.all(userPutPending).then(() => res.sendStatus(200))
-          })
+          if(specialContext.includes(userContext)){
+            customFlows[userContext](userData,userPhone,transformTextToHandle(answer),userMessagesObject,res);
+          }else{
+            const { template, name } = 
+              getSubcontextByContext.includes(userContext) 
+                ? templatebyContext[userContext][transformTextToHandle(answer)] 
+                : templatebyContext[userContext]
+            answerUser(template(userPhone))
+            const data = storageAnswerByContext.includes(userContext) 
+              ? { ...userData[0].Item , [dbColumnName[userContext] ? dbColumnName[userContext] : userContext] : answer} 
+              : {...userData[0].Item}
+            delete data.phonenumber
+            delete data.context
+            putDataFromMessages(userMessagesObject, data , name).then((userPutPending) => {
+              Promise.all(userPutPending).then(() => res.sendStatus(200))
+            })
+          }
         }else{
           const template = getFallbackByContext[userContext]
-          answerUser(template(userPhone))
-          res.sendStatus(200)
+          answerUser(template(userPhone), ()=>{res.sendStatus(200)})
         }
       }
     })

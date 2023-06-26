@@ -1,5 +1,6 @@
-const { greetings, menu } = require("./messages/default")
+const { greetings, menu, fallbackMenu, fallbackGreetings } = require("./messages/default")
 const { onboardingOne, onboardingTwo, refuseOnboarding, fallbackOnboardingTwo, onboardingThree, fallbackOnboardingThree, fallbackOnboardingFour, onboardingFour } = require("./messages/onboarding")
+const { recipesIntro, fallbackRecipesIntro, fallbackRecipesAnswer, recipesAnswer } = require("./messages/recipes")
 
 const templatebyContext = {
   initialContact: {
@@ -11,7 +12,7 @@ const templatebyContext = {
       name:'onboardingOne', 
       template: onboardingOne
     },
-    não: {
+    nao: {
       name: 'refuseOnboarding', 
       template: refuseOnboarding
     }
@@ -35,13 +36,37 @@ const templatebyContext = {
   onboardingFour: {
     name: 'menu',
     template: menu
+  },
+  menu: {
+    vamos_cozinhar: {
+      name: 'recipesIntro',
+      template: recipesIntro
+    }
+  },
+  recipesIntro:{
+    name: 'recipesAnswer',
+    template: recipesAnswer
+  },
+  recipesAnswer: {
+    voltar_ao_menu: {
+      name: 'menu',
+      template: menu
+    },
+    mais_uma: {
+      name: 'recipesIntro',
+      template: recipesIntro
+    }
   }
 }
 
 const getFallbackByContext = {
+  greetings: fallbackGreetings,
   onboardingTwo: fallbackOnboardingTwo,
   onboardingThree: fallbackOnboardingThree,
-  onboardingFour: fallbackOnboardingFour
+  onboardingFour: fallbackOnboardingFour,
+  menu: fallbackMenu,
+  recipesIntro: fallbackRecipesIntro,
+  recipesAnswer: fallbackRecipesAnswer
 }
 
 module.exports = {templatebyContext, getFallbackByContext}

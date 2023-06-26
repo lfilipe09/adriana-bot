@@ -17,22 +17,155 @@ const greetings = (user) => ({
         {
           "type": "reply",
           "reply": {
-            "id": "greetings_1",
+            "id": "sim",
             "title": "Sim"
           }
         },
         {
           "type": "reply",
           "reply": {
-            "id": "greetings_2",
+            "id": "nao",
             "title": "Não"
           }
         }
       ]
-    }
+    } 
   }
 })
 
-const menu = (user) => ({})
+const menu = (user) => ({
+	"messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": user,
+  "type": "interactive",
+  "interactive":{
+    "type": "list",
+    "header": {
+      "type": "text",
+      "text": "🌟 Olá! Tudo bem? 🌟"
+    },
+    "body": {
+      "text": "Estou aqui para cuidar de você e te ajudar da melhor maneira. Confira as opções disponíveis clicando no botão abaixo: 😊"
+    },
+    "action": {
+      "button": "Menu",
+      "sections":[
+        {
+          "rows": [
+            {
+              "id":"jogos",
+              "title": "Vamos jogar🃏"    
+            },
+						{
+              "id":"lembrete",
+              "title": "Salvar lembrete📝"    
+            },
+						{
+              "id":"receitas",
+              "title": "Vamos cozinhar🥗"    
+            },
+						{
+              "id":"biblia",
+              "title": "Ler a bíblia🙏"    
+            },
+            {
+              "id":"positiva",
+              "title": "Mensagem positiva✌️"    
+            },
+            {
+              "id":"golpes",
+              "title": "Sobre golpes🔎"    
+            }
+          ]
+        }
+      ]
+    }
+  }
+}) 
 
-module.exports = {greetings, menu}
+const fallbackGreetings = (user) => ({
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": user,
+  "type": "interactive",
+  "interactive": {
+    "type": "button",
+    "header": {
+      "type": "text",
+      "text": "Eita, não entendi o que disse!😢"
+    },
+    "body": {
+      "text": "Quando se sentir pronto(a), basta selecionar uma opção abaixo para começarmos 😉 "
+    },
+    "action": {
+      "buttons": [
+        {
+          "type": "reply",
+          "reply": {
+            "id": "sim",
+            "title": "Sim"
+          }
+        },
+        {
+          "type": "reply",
+          "reply": {
+            "id": "nao",
+            "title": "Não"
+          }
+        }
+      ]
+    } 
+  }
+}) 
+
+const fallbackMenu = (user) => ({
+	"messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": user,
+  "type": "interactive",
+  "interactive":{
+    "type": "list",
+    "header": {
+      "type": "text",
+      "text": "Poxa, não entendi o que você disse 😢"
+    },
+    "body": {
+      "text": "Parece que você mandou algo que eu não entendi! Para navegar no menu e prosseguirmos, selecione uma opção no botão abaixo:"
+    },
+    "action": {
+      "button": "Menu",
+      "sections":[
+        {
+          "rows": [
+            {
+              "id":"jogos",
+              "title": "Vamos jogar🃏"    
+            },
+						{
+              "id":"lembrete",
+              "title": "Salvar lembrete📝"    
+            },
+						{
+              "id":"receitas",
+              "title": "Vamos cozinhar🥗"    
+            },
+						{
+              "id":"biblia",
+              "title": "Ler a bíblia🙏"    
+            },
+            {
+              "id":"positiva",
+              "title": "Mensagem positiva✌️"    
+            },
+            {
+              "id":"golpes",
+              "title": "Sobre golpes🔎"    
+            }
+          ]
+        }
+      ]
+    }
+  }
+}) 
+
+module.exports = {greetings, menu, fallbackMenu, fallbackGreetings}
