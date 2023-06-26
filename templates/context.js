@@ -1,7 +1,9 @@
 const { fallbackBible, bibleMessage } = require("./messages/bible")
 const { greetings, menu, fallbackMenu, fallbackGreetings } = require("./messages/default")
 const { onboardingOne, onboardingTwo, refuseOnboarding, fallbackOnboardingTwo, onboardingThree, fallbackOnboardingThree, fallbackOnboardingFour, onboardingFour } = require("./messages/onboarding")
+const { positiveMessage, fallbackPositiveMessage } = require("./messages/positive")
 const { recipesIntro, fallbackRecipesIntro, fallbackRecipesAnswer, recipesAnswer } = require("./messages/recipes")
+const { fallbackScamsMessage, scamsMessage } = require("./messages/scams")
 
 const templatebyContext = {
   initialContact: {
@@ -40,13 +42,21 @@ const templatebyContext = {
   },
   menu: {
     vamos_cozinhar: {
-      name: 'recipesIntro',
+      name: 'recipesIntro', 
       template: recipesIntro
     },
     ler_a_biblia: {
       name: 'bibleMessage',
       template: bibleMessage
-    }
+    },
+    mensagem_positiva: {
+      name: 'positiveMessage',
+      template: positiveMessage
+    },
+    sobre_golpes: {
+      name: 'scamsMessage',
+      template: scamsMessage
+    } 
   },
   recipesIntro:{
     name: 'recipesAnswer',
@@ -71,6 +81,26 @@ const templatebyContext = {
       name: 'bibleMessage',
       template: bibleMessage
     }
+  },
+  positiveMessage: {
+    voltar_ao_menu: {
+      name: 'menu',
+      template: menu
+    },
+    mais_uma: {
+      name: 'positiveMessage',
+      template: positiveMessage
+    }
+  },
+  scamsMessage: {
+    voltar_ao_menu: {
+      name: 'menu',
+      template: menu
+    },
+    mais_uma: {
+      name: 'scamsMessage',
+      template: scamsMessage
+    }
   }
 }
 
@@ -82,7 +112,9 @@ const getFallbackByContext = {
   menu: fallbackMenu,
   recipesIntro: fallbackRecipesIntro,
   recipesAnswer: fallbackRecipesAnswer,
-  bibleMessage: fallbackBible
+  bibleMessage: fallbackBible,
+  positiveMessage: fallbackPositiveMessage,
+  scamsMessage: fallbackScamsMessage
 }
 
 module.exports = {templatebyContext, getFallbackByContext}

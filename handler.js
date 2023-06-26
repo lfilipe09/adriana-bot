@@ -51,24 +51,23 @@ app.post('/webhooks', async (req, res) => {
               ? body.entry[0].changes[0].value.messages[0].interactive.list_reply.title 
               : body.entry[0].changes[0].value.messages[0].interactive.button_reply.title
             : body.entry[0].changes[0].value.messages[0].text.body
-
+        const answerFormatted = transformTextToHandle(answer)
         const userContext = userData[0].Item.context;
 
         const isAnswerRight = 
           !(userContext in answersValidations) 
             ? true 
-            : answersValidations[userContext].test(transformTextToHandle(answer))
+            : answersValidations[userContext].test(answerFormatted)
 
         if(isAnswerRight){
           if(specialContext.includes(userContext)){
-            customFlows[userContext](userData,userPhone,transformTextToHandle(answer),userMessagesObject,res);
-            console.log('entrei1')
+            customFlows[userContext](userData,userPhone,answerFormatted,userMessagesObject,res);
+          }else if(userContext === 'menu' && (answerFormatted == 'ler_a_biblia' || answerFormatted == 'mensagem_positiva' || answerFormatted == 'sobre_golpes' )){
+            customFlows[answerFormatted == 'ler_a_biblia' ? 'bibleMessage' : answerFormatted == 'mensagem_positiva' ? 'positiveMessage' : 'scamsMessage'](userData,userPhone,answerFormatted,userMessagesObject,res);
           }else{
-            console.log(userContext)
-            console.log('entrei2')
             const { template, name } = 
               getSubcontextByContext.includes(userContext) 
-                ? templatebyContext[userContext][transformTextToHandle(answer)] 
+                ? templatebyContext[userContext][answerFormatted] 
                 : templatebyContext[userContext]
             answerUser(template(userPhone))
             const data = storageAnswerByContext.includes(userContext) 

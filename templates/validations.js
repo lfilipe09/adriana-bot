@@ -8,7 +8,9 @@ const answersValidations = {
   menu: /^(vamos_jogar|salvar_lembrete|vamos_cozinhar|ler_a_biblia|ler_a_biblia|mensagem_positiva|sobre_golpes)$/i,
   recipesIntro: /^(doce|salgada)$/i,
   recipesAnswer: /^(voltar_ao_menu|mais_uma)$/i,
-  bibleMessage: /^(voltar_ao_menu|mais_uma)$/i
+  bibleMessage: /^(voltar_ao_menu|mais_uma)$/i,
+  positiveMessage: /^(voltar_ao_menu|mais_uma)$/i,
+  scamsMessage: /^(voltar_ao_menu|mais_uma)$/i
 }
 
 const storageAnswerByContext = [
