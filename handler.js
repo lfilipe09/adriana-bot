@@ -62,7 +62,10 @@ app.post('/webhooks', async (req, res) => {
         if(isAnswerRight){
           if(specialContext.includes(userContext)){
             customFlows[userContext](userData,userPhone,transformTextToHandle(answer),userMessagesObject,res);
+            console.log('entrei1')
           }else{
+            console.log(userContext)
+            console.log('entrei2')
             const { template, name } = 
               getSubcontextByContext.includes(userContext) 
                 ? templatebyContext[userContext][transformTextToHandle(answer)] 

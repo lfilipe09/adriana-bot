@@ -1,4 +1,5 @@
 const { putDataFromMessages } = require("../db/actions")
+const { bibleMessage } = require("../templates/messages/bible")
 const { recipesAnswer } = require("../templates/messages/recipes")
 const { answerUser } = require("../utils/bot")
 const { getRandomNumberExcluding } = require("../utils/randomNumber")
@@ -13,7 +14,6 @@ const customFlows = {
           ? validateNumberArray(exceptions.filter((element) => element !== ""), 0, 19) 
           : validateNumberArray(exceptions.filter((element) => element !== ""), 20, 39) 
         : false
-    console.log('exceptions',exceptions)
       const index = 
         isAlreadyAllRecipes  
           ? exceptions && answer == 'salgada'  
@@ -29,6 +29,24 @@ const customFlows = {
       putDataFromMessages(userMessagesObject, data , 'recipesAnswer').then((userPutPending) => {
         Promise.all(userPutPending).then(() => res.sendStatus(200))
       })
+  },
+  bibleMessage: (userData, userPhone, answer,userMessagesObject,res) => {
+    const exceptions = userData[0].Item['answered_bible']?.split(',')
+    const isAlreadyAllBible = 
+      exceptions 
+        ? validateNumberArray(exceptions.filter((element) => element !== ""), 0, 144)
+        : false
+        const index = 
+        isAlreadyAllBible  
+          ? getRandomNumberExcluding(0, 144)
+          : getRandomNumberExcluding(0, 144, exceptions)
+    answerUser(bibleMessage(userPhone, index))
+    const data = { ...userData[0].Item , answered_bible : userData[0].Item['answered_bible'] ? userData[0].Item['answered_bible'] + `,${index}` : `${index}`} 
+    delete data.phonenumber
+    delete data.context
+    putDataFromMessages(userMessagesObject, data , 'bibleMessage').then((userPutPending) => {
+      Promise.all(userPutPending).then(() => res.sendStatus(200))
+    })
   }
 }
 

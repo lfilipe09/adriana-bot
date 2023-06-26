@@ -1,3 +1,4 @@
+const { fallbackBible, bibleMessage } = require("./messages/bible")
 const { greetings, menu, fallbackMenu, fallbackGreetings } = require("./messages/default")
 const { onboardingOne, onboardingTwo, refuseOnboarding, fallbackOnboardingTwo, onboardingThree, fallbackOnboardingThree, fallbackOnboardingFour, onboardingFour } = require("./messages/onboarding")
 const { recipesIntro, fallbackRecipesIntro, fallbackRecipesAnswer, recipesAnswer } = require("./messages/recipes")
@@ -41,6 +42,10 @@ const templatebyContext = {
     vamos_cozinhar: {
       name: 'recipesIntro',
       template: recipesIntro
+    },
+    ler_a_biblia: {
+      name: 'bibleMessage',
+      template: bibleMessage
     }
   },
   recipesIntro:{
@@ -56,6 +61,16 @@ const templatebyContext = {
       name: 'recipesIntro',
       template: recipesIntro
     }
+  },
+  bibleMessage: {
+    voltar_ao_menu: {
+      name: 'menu',
+      template: menu
+    },
+    mais_uma: {
+      name: 'bibleMessage',
+      template: bibleMessage
+    }
   }
 }
 
@@ -66,7 +81,8 @@ const getFallbackByContext = {
   onboardingFour: fallbackOnboardingFour,
   menu: fallbackMenu,
   recipesIntro: fallbackRecipesIntro,
-  recipesAnswer: fallbackRecipesAnswer
+  recipesAnswer: fallbackRecipesAnswer,
+  bibleMessage: fallbackBible
 }
 
 module.exports = {templatebyContext, getFallbackByContext}
