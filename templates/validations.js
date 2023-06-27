@@ -1,4 +1,5 @@
 const { customFlows } = require("../flows/customFlows")
+const { hangmanFlows } = require("../flows/hangmanFlow")
 
 const answersValidations = {
   greetings: /^(sim|nao)$/i,
@@ -10,7 +11,12 @@ const answersValidations = {
   recipesAnswer: /^(voltar_ao_menu|mais_uma)$/i,
   bibleMessage: /^(voltar_ao_menu|mais_uma)$/i,
   positiveMessage: /^(voltar_ao_menu|mais_uma)$/i,
-  scamsMessage: /^(voltar_ao_menu|mais_uma)$/i
+  scamsMessage: /^(voltar_ao_menu|mais_uma)$/i,
+  gameIntro: /^(menu|jogo_do_milhao|jogo_da_forca)$/i,
+  hangmanWordsIntro: /^(voltar_ao_menu|escutar_instrucoes|jogar_agora)$/i,
+  hangmanWordsRules: /^(voltar_ao_menu|jogar_agora)$/i,
+  hangmanWordsWinner: /^(voltar_ao_menu|outra_vez)$/i,
+  hangmanWordsLoser: /^(voltar_ao_menu|outra_vez)$/i
 }
 
 const storageAnswerByContext = [
@@ -23,10 +29,18 @@ const storageAnswerByContext = [
 const getSubcontextByContext = [
   'greetings',
   'menu',
-  'recipesAnswer'
+  'recipesAnswer',
+  'gameIntro',
+  'bibleMessage',
+  'positiveMessage',
+  'scamsMessage',
+  'hangmanWordsIntro',
+  'hangmanWordsRules',
+  'hangmanWordsWinner',
+  'hangmanWordsLoser'
 ]
 
-const specialContext = Object.keys(customFlows)
+const specialContext = [...Object.keys(customFlows), ...Object.keys(hangmanFlows) ]
 
 const dbColumnName = {
   onboardingOne: 'name',

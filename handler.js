@@ -6,6 +6,7 @@ const { putDataFromMessages, getDataFromMessages } = require('./db/actions')
 const { answersValidations, getSubcontextByContext, storageAnswerByContext, dbColumnName, specialContext } = require('./templates/validations')
 const { customFlows } = require('./flows/customFlows')
 const { transformTextToHandle } = require('./utils/transformTextToHandle')
+const { hangmanFlows } = require('./flows/hangmanFlow')
 
 const app = express()
 
@@ -60,8 +61,10 @@ app.post('/webhooks', async (req, res) => {
             : answersValidations[userContext].test(answerFormatted)
 
         if(isAnswerRight){
-          if(specialContext.includes(userContext)){
-            customFlows[userContext](userData,userPhone,answerFormatted,userMessagesObject,res);
+          if(specialContext.includes(userContext)){  
+            Object.keys(customFlows).includes(userContext) 
+              ? customFlows[userContext](userData,userPhone,answerFormatted,userMessagesObject,res)
+              : hangmanFlows[userContext](userData,userPhone,answerFormatted,userMessagesObject,res)
           }else if(userContext === 'menu' && (answerFormatted == 'ler_a_biblia' || answerFormatted == 'mensagem_positiva' || answerFormatted == 'sobre_golpes' )){
             customFlows[answerFormatted == 'ler_a_biblia' ? 'bibleMessage' : answerFormatted == 'mensagem_positiva' ? 'positiveMessage' : 'scamsMessage'](userData,userPhone,answerFormatted,userMessagesObject,res);
           }else{

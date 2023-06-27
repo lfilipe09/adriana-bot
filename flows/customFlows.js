@@ -42,7 +42,7 @@ const customFlows = {
         putDataFromMessages(userMessagesObject, data , 'menu').then((userPutPending) => {
           Promise.all(userPutPending).then(() => res.sendStatus(200))
         })
-    }else{
+    }else{ 
       const exceptions = userData[0].Item['answered_bible']?.split(',')
       const isAlreadyAllBible = 
         exceptions 

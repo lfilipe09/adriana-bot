@@ -1,5 +1,7 @@
 const { fallbackBible, bibleMessage } = require("./messages/bible")
 const { greetings, menu, fallbackMenu, fallbackGreetings } = require("./messages/default")
+const { gameIntro, gameIntroFallback } = require("./messages/game")
+const { hangmanWordsIntro, hangmanWordsRules, hangmanWordsInGame, fallbackHangmanWordsIntro, fallbackHangmanWordsInGame, fallbackHangmanWordsRules, fallbackHangmanWordsWinner, fallbackHangmanWordsLoser } = require("./messages/hangmanWords")
 const { onboardingOne, onboardingTwo, refuseOnboarding, fallbackOnboardingTwo, onboardingThree, fallbackOnboardingThree, fallbackOnboardingFour, onboardingFour } = require("./messages/onboarding")
 const { positiveMessage, fallbackPositiveMessage } = require("./messages/positive")
 const { recipesIntro, fallbackRecipesIntro, fallbackRecipesAnswer, recipesAnswer } = require("./messages/recipes")
@@ -56,7 +58,11 @@ const templatebyContext = {
     sobre_golpes: {
       name: 'scamsMessage',
       template: scamsMessage
-    } 
+    },
+    vamos_jogar: {
+      name: 'gameIntro',
+      template: gameIntro
+    }
   },
   recipesIntro:{
     name: 'recipesAnswer',
@@ -101,6 +107,16 @@ const templatebyContext = {
       name: 'scamsMessage',
       template: scamsMessage
     }
+  },
+  gameIntro: {
+    jogo_da_forca: {
+      name: 'hangmanWordsIntro',
+      template: hangmanWordsIntro
+    },
+    menu:{
+      name: 'menu',
+      template: menu
+    }
   }
 }
 
@@ -114,7 +130,13 @@ const getFallbackByContext = {
   recipesAnswer: fallbackRecipesAnswer,
   bibleMessage: fallbackBible,
   positiveMessage: fallbackPositiveMessage,
-  scamsMessage: fallbackScamsMessage
+  scamsMessage: fallbackScamsMessage,
+  gameIntro: gameIntroFallback,
+  hangmanWordsIntro: fallbackHangmanWordsIntro,
+  hangmanWordsInGame: fallbackHangmanWordsInGame,
+  hangmanWordsRules: fallbackHangmanWordsRules,
+  hangmanWordsWinner: fallbackHangmanWordsWinner,
+  hangmanWordsLoser: fallbackHangmanWordsLoser
 }
 
 module.exports = {templatebyContext, getFallbackByContext}
